@@ -1,6 +1,7 @@
 # stream-cli-player
 Windows only
-A webview embedded stream player cli
+
+A webview embedded twitch stream player cli
 
 Uses:
 [webview](https://github.com/webview/webview)
