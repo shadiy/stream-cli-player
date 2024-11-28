@@ -2,6 +2,11 @@
 Windows only
 A webview embedded stream player cli
 
+Uses:
+[webview](https://github.com/webview/webview)
+[cpp-httplib](https://github.com/yhirose/cpp-httplib)
+[subprocess.h](https://github.com/sheredom/subprocess.h)
+
 Usage
 ```
 stream <channel name>
