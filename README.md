@@ -1,2 +1,2 @@
-# twitch-cli-player
-A webview embedded twitch player cli
+# stream-cli-player
+A webview embedded stream player cli
