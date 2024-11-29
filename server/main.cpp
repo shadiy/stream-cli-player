@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
         res.set_content(js, "text/javascript");
     });
 
-    svr.set_keep_alive_timeout(10);
+    svr.set_idle_interval(10);
 
     std::cout << "Listening on 127.0.0.1:8080" << std::endl;
     svr.listen("127.0.0.1", 8080);
