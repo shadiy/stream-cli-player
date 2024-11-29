@@ -1,13 +1,14 @@
-#define WIN32_LEAN_AND_MEAN 
-#include <windows.h>
-
 #include <iostream>
-#include <fstream>
-#include <ostream>
 #include <string>
 
-#include <cstdlib>
+#if defined(_WIN32)
+#define WIN32_LEAN_AND_MEAN 
+#include <windows.h>
+#else
 #include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#endif
 
 #include "webview/webview.h"
 
@@ -17,6 +18,7 @@
 subprocess_s server_p;
 webview::webview w(true, nullptr);
 
+#if defined(_WIN32)
 BOOL WINAPI ConsoleHandler(DWORD dwType)
 {
     switch(dwType) {
@@ -35,10 +37,24 @@ BOOL WINAPI ConsoleHandler(DWORD dwType)
         ExitProcess(0);
         break;
     default:
-        printf("Some other event\n");
+        printf("Other event\n");
     }
     return TRUE;
 }
+#else
+static void signal_handler(int id) {
+    if (subprocess_alive(&server_p)) {
+        std::cout << "Closing server" << std::endl;
+        int res = subprocess_terminate(&server_p);
+        if (res != 0) {
+            std::cout << "Error in closing server" << std::endl;
+        }
+    }
+
+    w.terminate();
+    exit(1);
+}
+#endif
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -46,10 +62,14 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+#if _WIN32
     if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)ConsoleHandler, TRUE)) {
         fprintf(stderr, "Unable to install handler!\n");
         return 1;
     }
+#else
+    signal(SIGINT, signal_handler);
+#endif
 
     char p_stdout_buffer[256] = { 0 };
 
