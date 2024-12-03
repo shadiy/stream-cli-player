@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 
     subprocess_s player_p;
     const char *command_line[] = {"player", argv[1], NULL};
-    int result = subprocess_create(command_line, subprocess_option_enable_async | subprocess_option_inherit_environment, &player_p);
+    int result = subprocess_create(command_line, subprocess_option_enable_async | subprocess_option_inherit_environment | subprocess_option_no_window, &player_p);
     if (0 != result) {
         std::cout << "Error in starting player" << std::endl;
         return 1;
